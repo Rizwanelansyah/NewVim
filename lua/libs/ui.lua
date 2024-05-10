@@ -23,12 +23,11 @@ function M.prompt(text, default, handler)
       relative = 'editor',
       position = {
         col = 0,
-        row = vim.api.nvim_win_get_cursor(0)[1] + 1,
+        row = vim.api.nvim_win_get_cursor(0)[1] + 2,
       },
       focusable = true,
     },
     {
-      prompt = ": ",
       default_value = default,
       on_submit = handler,
     }
@@ -44,34 +43,45 @@ end
 ---@param text string
 ---@param values string[]
 ---@param handler fun(node: NuiTree.Node)
-function M.select(text, values, handler)
+---@param override? fun(opts: nui_popup_options)
+function M.select(text, values, handler, override)
   local Menu = require("nui.menu")
   local lines = {}
   for i, line in ipairs(values) do
-    lines[i] = Menu.item(line)
+    if type(line) == "table" then
+      lines[i] = line
+    else
+      lines[i] = Menu.item(line)
+    end
   end
-  local menu = Menu(
-    {
-      size = {
-        width = 50,
-        height = #lines,
-      },
-      enter = true,
-      border = {
-        style = 'single',
-        text = {
-          top = "[ " .. text .. " ]",
-          top_align = 'left',
-        },
-      },
-      zindex = 100,
-      relative = 'editor',
-      position = {
-        col = 0,
-        row = vim.api.nvim_win_get_cursor(0)[1] + 1,
-      },
-      focusable = true,
+
+  local opts = {
+    size = {
+      width = 50,
+      height = #lines + 2,
     },
+    enter = true,
+    border = {
+      style = 'single',
+      text = {
+        top = "[ " .. text .. " ]",
+        top_align = 'left',
+      },
+    },
+    zindex = 100,
+    relative = 'editor',
+    position = {
+      col = 0,
+      row = vim.api.nvim_win_get_cursor(0)[1] + 2,
+    },
+    focusable = true,
+  }
+
+  if override then
+    override(opts)
+  end
+
+  local menu = Menu(opts,
     {
       lines = lines,
       on_submit = handler,
@@ -81,8 +91,7 @@ function M.select(text, values, handler)
         close = { "<Esc>", "<C-c>" },
         submit = { "<CR>", "<Space>" },
       },
-    }
-  )
+    })
 
   menu:map("n", "<ESC>", function()
     menu:unmount()

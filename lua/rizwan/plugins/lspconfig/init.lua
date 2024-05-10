@@ -34,7 +34,7 @@ M.config = function()
     virtual_text = true,
     signs = true,
     underline = false,
-    update_in_insert = true,
+    update_in_insert = false,
     severity_sort = false,
   })
 

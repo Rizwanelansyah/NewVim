@@ -1,3 +1,19 @@
+function LOG(x)
+  vim.print(x)
+  return x
+end
+
+function os.capture(cmd, raw)
+  local f = assert(io.popen(cmd, 'r'))
+  local s = assert(f:read('*a'))
+  f:close()
+  if raw then return s end
+  s = string.gsub(s, '^%s+', '')
+  s = string.gsub(s, '%s+$', '')
+  s = string.gsub(s, '[\n\r]+', ' ')
+  return s
+end
+
 if vim.g.neovide then
   vim.keymap.set("n", "<C-S-v>", "\"+p")
   vim.keymap.set("i", "<C-S-v>", "<ESC>\"+pa")

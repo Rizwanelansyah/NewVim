@@ -1,13 +1,13 @@
 return function()
-	-- disable netrw at the very start of your init.lua
-	vim.g.loaded_netrw = 1
-	vim.g.loaded_netrwPlugin = 1
+  -- disable netrw at the very start of your init.lua
+  vim.g.loaded_netrw = 1
+  vim.g.loaded_netrwPlugin = 1
 
-	-- optionally enable 24-bit colour
-	vim.opt.termguicolors = true
+  -- optionally enable 24-bit colour
+  vim.opt.termguicolors = true
 
-	-- empty setup using defaults
-	require("nvim-tree").setup {
+  -- empty setup using defaults
+  require("nvim-tree").setup {
     renderer = {
       add_trailing = true,
       full_name = true,
@@ -15,10 +15,10 @@ return function()
         local home = os.getenv("HOME")
         return path:gsub(home .. "/.config/", "=>"):gsub(home .. "/?", "~>"):gsub("/", "->")
       end,
-      highlight_git = "all",
-      highlight_diagnostics = "all",
-      highlight_opened_files = "all",
-      highlight_modified = "all",
+      highlight_git = "icon",
+      highlight_diagnostics = "icon",
+      highlight_opened_files = "icon",
+      highlight_modified = "icon",
       indent_markers = {
         enable = true,
       },
@@ -35,7 +35,7 @@ return function()
     on_attach = require("rizwan.plugins.nvim-tree.on_attach"),
   }
 
-	vim.keymap.set("n", "<leader>fe", "<CMD>NvimTreeToggle<CR>")
+  vim.keymap.set("n", "<leader>fe", "<CMD>NvimTreeToggle<CR>")
   local map = require("which-key")
   map.register(
     {
