@@ -24,8 +24,8 @@ M.config = function()
     capabilities = require("rizwan.plugins.lspconfig.capabilities"),
     on_attach = require("rizwan.plugins.lspconfig.on_attach"),
     handlers = {
-      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' }),
-      ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' }),
+      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'single' }),
+      ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'single' }),
     },
   }
   require("rizwan.plugins.lspconfig.servers")(lspconfig, base)
@@ -46,6 +46,7 @@ M.config = function()
       numhl = "DiagnosticSign" .. diag,
     })
   end
+  require('lspconfig.ui.windows').default_options.border = 'single'
 end
 
 return M

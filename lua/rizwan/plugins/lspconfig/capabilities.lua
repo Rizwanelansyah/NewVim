@@ -41,7 +41,7 @@ cmp.setup {
   })
 })
 require("cmp_git").setup() ]]
-                              --
+--
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ '/', '?' }, {
@@ -59,10 +59,6 @@ cmp.setup.cmdline(':', {
   }, {
     { name = 'cmdline' }
   }),
----@diagnostic disable-next-line: missing-fields
-  matching = {
-    disallow_symbol_nonprefix_matching = false,
-  }
 })
 
 return require('cmp_nvim_lsp').default_capabilities()

@@ -3,39 +3,50 @@ local M = {}
 ---@param text string
 ---@param default string
 ---@param handler fun(value: string): nil
-function M.prompt(text, default, handler)
+---@param override? fun(opts: nui_popup_options)
+---@param conf? fun(input: NuiInput)
+function M.prompt(text, default, handler, override, conf)
   local Input = require("nui.input")
-  local input = Input(
-    {
-      size = {
-        width = 50,
-        height = 1,
-      },
-      enter = true,
-      border = {
-        style = 'single',
-        text = {
-          top = "[ " .. text .. " ]",
-          top_align = 'left',
-        },
-      },
-      zindex = 100,
-      relative = 'editor',
-      position = {
-        col = 0,
-        row = vim.api.nvim_win_get_cursor(0)[1] + 2,
-      },
-      focusable = true,
+  local opts = {
+    size = {
+      width = 50,
+      height = 1,
     },
+    enter = true,
+    border = {
+      style = 'single',
+      text = {
+        top = "[ " .. text .. " ]",
+        top_align = 'left',
+      },
+    },
+    zindex = 100,
+    relative = 'editor',
+    position = {
+      col = 0,
+      row = vim.api.nvim_win_get_cursor(0)[1] + 2,
+    },
+    focusable = true,
+  }
+
+  if override then
+    override(opts)
+  end
+
+  local input = Input(opts,
     {
       default_value = default,
       on_submit = handler,
     }
   )
 
-  input:map("n", "<ESC>", function()
+  input:map("i", "<ESC>", function()
     input:unmount()
   end)
+
+  if conf then
+    conf(input)
+  end
 
   input:mount()
 end
@@ -44,7 +55,8 @@ end
 ---@param values string[]
 ---@param handler fun(node: NuiTree.Node)
 ---@param override? fun(opts: nui_popup_options)
-function M.select(text, values, handler, override)
+---@param conf? fun(menu: NuiMenu)
+function M.select(text, values, handler, override, conf)
   local Menu = require("nui.menu")
   local lines = {}
   for i, line in ipairs(values) do
@@ -96,6 +108,10 @@ function M.select(text, values, handler, override)
   menu:map("n", "<ESC>", function()
     menu:unmount()
   end)
+
+  if conf then
+    conf(menu)
+  end
 
   menu:mount()
 end

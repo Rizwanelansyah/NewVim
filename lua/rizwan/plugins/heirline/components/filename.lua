@@ -1,4 +1,3 @@
-local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 local colors = require("onedark.colors")
 local ui = require("libs.ui")
@@ -6,7 +5,80 @@ local path = require("plenary.path")
 local Menu = require("nui.menu")
 local Text = require("nui.text")
 local Line = require("nui.line")
+local scan_dir = require("plenary.scandir")
 local nvim_devicon = require("nvim-web-devicons")
+
+---@param file_path string
+local function file_seek(file_path)
+  local choices = scan_dir.scan_dir(file_path, { only_dirs = true, depth = 1 })
+  local i = #choices + 1
+  local files = scan_dir.scan_dir(file_path, { add_dirs = false, depth = 1 })
+  for _, file in ipairs(files) do
+    choices[i] = file
+    i = i + 1
+  end
+
+  for i, choice in ipairs(choices) do
+    if path:new(choice):is_dir() then
+      local foldername = os.capture("basename " .. choice)
+      choices[i] = Menu.item(
+        Line {
+          Text("  ", "Directory"),
+          Text(foldername, "Normal")
+        },
+        { value = choice }
+      )
+    else
+      local filename = os.capture("basename " .. choice)
+      local filetype = vim.filetype.match { filename = filename }
+      local fileicon, color = nvim_devicon.get_icon_color_by_filetype(filetype)
+      local hl = "heirline_filetype_hl_" .. (filetype or "nil")
+      vim.api.nvim_set_hl(0, hl, { fg = color or "white" })
+      choices[i] = Menu.item(
+        Line {
+          Text(" " .. (fileicon or "?") .. " ", hl),
+          Text(filename, "Normal")
+        },
+        { value = choice }
+      )
+    end
+  end
+
+  ui.select("Select File", choices,
+    function(node)
+      if path:new(node.value):is_dir() then
+        vim.cmd [[ silent NvimTreeClose ]]
+        vim.cmd("silent NvimTreeOpen " .. node.value)
+        return
+      end
+      vim.cmd("silent e " .. node.value)
+    end,
+    function(opts)
+      local height = math.floor(vim.o.lines / 2)
+      opts.relative = 'editor'
+      opts.position = {
+        col = 2,
+        row = vim.o.lines - 3 - height,
+      }
+      opts.size.width = vim.o.columns - 4
+      opts.size.height = height
+    end,
+    function(menu)
+      menu:map("n", { "<Right>", "l" }, function()
+        local line = vim.api.nvim_win_get_cursor(menu.winid)[1]
+        local node, _, _ = menu.tree:get_node(line)
+        if not node then return end
+        if path:new(node.value):is_dir() then
+          menu:unmount()
+          file_seek(node.value)
+        end
+      end)
+      menu:map("n", { "<Left>", "h" }, function()
+        menu:unmount()
+        file_seek(path:new(file_path):parent():absolute())
+      end)
+    end)
+end
 
 local FileNameBlock = {
   -- let's first set up some attributes needed by this component and it's children
@@ -19,37 +91,7 @@ local FileNameBlock = {
     callback = function(self, minwid, nclicks, button, mods)
       ---@type Path
       local file = path:new(vim.api.nvim_buf_get_name(0))
-      local choices = require("plenary.scandir").scan_dir(file:parent():absolute(), { add_dirs = false, depth = 1 })
-
-      for i, choice in ipairs(choices) do
-        local filename = os.capture("basename " .. choice)
-        local filetype = vim.filetype.match { filename = filename }
-        local fileicon, color = nvim_devicon.get_icon_color_by_filetype(filetype)
-        local hl = "heirline_filetype_hl_" .. filetype
-        vim.api.nvim_set_hl(0, hl, { fg = color or "white" })
-        choices[i] = Menu.item(
-          Line {
-            Text(" " .. fileicon .. " ", hl),
-            Text(filename, "Normal")
-          },
-          { value = choice }
-        )
-      end
-
-      ui.select("Select File", choices,
-        function(node)
-          vim.cmd("silent e " .. node.value)
-        end,
-        function(opts)
-          local height = math.floor(vim.o.lines / 2)
-          opts.relative = 'editor'
-          opts.position = {
-            col = 2,
-            row = vim.o.lines - 3 - height,
-          }
-          opts.size.width = vim.o.columns - 4
-          opts.size.height = height
-        end)
+      file_seek(file:parent():absolute())
     end,
   },
 }
@@ -62,7 +104,7 @@ local FileIcon = {
     self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
   end,
   provider = function(self)
-    return COUNT_MIDDLE_SPACE(self.icon and (" " .. self.icon .. " "))
+    return self.icon and (" " .. self.icon .. " ")
   end,
   hl = function(self)
     return { fg = self.icon_color, bg = colors.grey }
@@ -71,7 +113,7 @@ local FileIcon = {
 
 local FileName = {
   provider = function()
-    return COUNT_MIDDLE_SPACE(vim.fn.expand("%:t") .. " ")
+    return vim.fn.expand("%:t") .. " "
   end,
   hl = { fg = utils.get_highlight("Directory").fg, bg = colors.grey },
 }
@@ -82,7 +124,7 @@ local FileFlags = {
       return vim.bo.modified
     end,
     provider = function()
-      return COUNT_MIDDLE_SPACE(" ")
+      return " "
     end,
     hl = { fg = colors.green, bg = colors.grey },
   },
@@ -91,7 +133,7 @@ local FileFlags = {
       return not vim.bo.modifiable or vim.bo.readonly
     end,
     provider = function()
-      return COUNT_MIDDLE_SPACE(" ")
+      return " "
     end,
     hl = { fg = colors.orange, bg = colors.grey },
   },
@@ -115,8 +157,5 @@ local FileNameModifer = {
 return utils.insert(FileNameBlock,
   FileIcon,
   utils.insert(FileNameModifer, FileName), -- a new table where FileName is a child of FileNameModifier
-  FileFlags,
-  {
-    provider = '%<',
-  } -- this means that the statusline is cut here when there's not enough space
+  FileFlags
 )

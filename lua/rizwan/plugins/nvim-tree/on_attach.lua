@@ -69,7 +69,17 @@ return function(bufnr)
         end
       end
 
-      ui.select("Move ".. node.name .." to Trash?", {"No", "Yes"}, handler)
+      ui.select("Move " .. node.name .. " to Trash?", { "No", "Yes" }, handler)
     end
   end, opts("Move To Trash"))
+
+  vim.keymap.set('n', '<CR>', function()
+    local node = lib.get_node_at_cursor()
+    if node then
+      api.node.open.edit()
+      if plen_path:new(node.absolute_path):is_file() then
+        vim.cmd [[ silent NvimTreeClose ]]
+      end
+    end
+  end, opts("Open/Expand/Collapse/CD"))
 end

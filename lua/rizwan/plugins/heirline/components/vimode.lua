@@ -5,6 +5,7 @@ local condition = require("heirline.conditions")
 return {
   init = function(self)
     self.mode = vim.api.nvim_get_mode().mode:lower()
+    vim.g.heirline_mode_color = self.modes.hl[self.mode]
   end,
   static = {
     modes = {
@@ -40,6 +41,8 @@ return {
       return { fg = "black", bg = self.modes.hl[self.mode], bold = true }
     end,
 
-    condition = condition.is_active,
+    condition = function()
+      return condition.is_active() and (vim.bo.modifiable and not vim.bo.readonly)
+    end,
   }
 }

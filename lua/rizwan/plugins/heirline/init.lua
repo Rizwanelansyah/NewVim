@@ -1,18 +1,12 @@
+---@diagnostic disable: undefined-global
 local function from(mod)
   return require("rizwan.plugins.heirline." .. mod)
 end
 
-function COUNT_MIDDLE_SPACE(str)
-  vim.g.statusline_middle_space = vim.g.statusline_middle_space + require("heirline.utils").count_chars(str)
-  return str
-end
-
 return function()
+  local colors = require("onedark.colors")
   require("heirline").setup {
     statusline = from("statusline"),
-    winbar = {},
-    tabline = {},
-    statuscolumn = {},
   }
 
   local map = require("which-key")

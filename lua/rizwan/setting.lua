@@ -22,13 +22,15 @@ M.after = function()
 
   vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = { "*" },
-    callback = function(_)
+    callback = function()
       local clients = vim.lsp.get_active_clients()
       if clients then
         vim.lsp.buf.format {}
       end
     end
   })
+
+  require("libs.vim.ui")
 end
 
 return M
