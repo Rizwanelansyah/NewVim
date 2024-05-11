@@ -107,7 +107,7 @@ local FileIcon = {
     return self.icon and (" " .. self.icon .. " ")
   end,
   hl = function(self)
-    return { fg = self.icon_color, bg = colors.grey }
+    return { fg = self.icon_color, bg = colors.black }
   end
 }
 
@@ -115,7 +115,7 @@ local FileName = {
   provider = function()
     return vim.fn.expand("%:t") .. " "
   end,
-  hl = { fg = utils.get_highlight("Directory").fg, bg = colors.grey },
+  hl = { fg = utils.get_highlight("Directory").fg, bg = colors.black },
 }
 
 local FileFlags = {
@@ -126,7 +126,7 @@ local FileFlags = {
     provider = function()
       return " "
     end,
-    hl = { fg = colors.green, bg = colors.grey },
+    hl = { fg = colors.green, bg = colors.black },
   },
   {
     condition = function()
@@ -135,7 +135,7 @@ local FileFlags = {
     provider = function()
       return " "
     end,
-    hl = { fg = colors.orange, bg = colors.grey },
+    hl = { fg = colors.orange, bg = colors.black },
   },
 }
 
@@ -148,7 +148,7 @@ local FileNameModifer = {
   hl = function()
     if vim.bo.modified then
       -- use `force` because we need to override the child's hl foreground
-      return { fg = colors.cyan, bg = colors.grey, bold = true, force = true }
+      return { fg = colors.cyan, bg = colors.black, bold = true, force = true }
     end
   end,
 }

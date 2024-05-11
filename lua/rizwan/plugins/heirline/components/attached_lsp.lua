@@ -4,7 +4,7 @@ local condition = require("heirline.conditions")
 return {
   provider = "LSP:",
   hl = function()
-    return { fg = vim.g.heirline_mode_color, bg = colors.grey }
+    return { fg = vim.g.heirline_mode_color, bg = colors.black }
   end,
   condition = function()
     local clients = vim.lsp.get_active_clients()
@@ -26,11 +26,11 @@ return {
         end
         return str
       end,
-      hl = { bg = colors.grey, fg = 'white' },
+      hl = { bg = colors.black, fg = 'white' },
     },
     {
       provider = "  ",
-      hl = { fg = "white", bg = colors.grey },
+      hl = { fg = "white", bg = colors.black },
       on_click = {
         name = "edit_lspconfig_file",
         minwid = 0,

@@ -17,6 +17,15 @@ return function(client, bufnr)
         h = { vim.lsp.buf.document_highlight, "Document Highlight" },
         s = { vim.lsp.buf.document_symbol, "Document Symbols" },
         r = { vim.lsp.buf.rename, "Rename Symbol" },
+        n = { "<CMD>Navbuddy<CR>", "Open Navbuddy" },
+        e = { function()
+          local _, winid = vim.diagnostic.open_float()
+          if winid then
+            vim.api.nvim_win_set_config(winid, {
+              border = 'single',
+            })
+          end
+        end, "Open Diagnostic Error" },
         w = {
           name = "Workspaces",
           a = { vim.lsp.buf.add_workspace_folder, "Add" },
@@ -34,43 +43,46 @@ return function(client, bufnr)
     }
   )
 
-  vim.api.nvim_create_autocmd("CursorHold", {
-    buffer = bufnr,
-    callback = function()
-      local opts = {
-        focusable = false,
-        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-        border = 'rounded',
-        source = 'always',
-        prefix = ' ',
-        scope = 'cursor',
-      }
-      vim.diagnostic.open_float(nil, opts)
-    end
-  })
+  require('virtualtypes').on_attach(client, bufnr)
+  require("nvim-navbuddy").attach(client, bufnr)
 
-  if client.resolved_capabilities.document_highlight then
-    vim.cmd [[
-    hi! LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-    hi! LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-    hi! LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-  ]]
-    vim.api.nvim_create_augroup('lsp_document_highlight', {
-      clear = false
-    })
-    vim.api.nvim_clear_autocmds({
-      buffer = bufnr,
-      group = 'lsp_document_highlight',
-    })
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-      group = 'lsp_document_highlight',
-      buffer = bufnr,
-      callback = vim.lsp.buf.document_highlight,
-    })
-    vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-      group = 'lsp_document_highlight',
-      buffer = bufnr,
-      callback = vim.lsp.buf.clear_references,
-    })
-  end
+  -- vim.api.nvim_create_autocmd("CursorHold", {
+  --   buffer = bufnr,
+  --   callback = function()
+  --     local opts = {
+  --       focusable = false,
+  --       close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+  --       border = 'single',
+  --       source = 'always',
+  --       prefix = ' ',
+  --       scope = 'cursor',
+  --     }
+  --     vim.diagnostic.open_float(nil, opts)
+  --   end
+  -- })
+
+  -- if client.resolved_capabilities.document_highlight then
+  --   vim.cmd [[
+  --   hi! LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+  --   hi! LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+  --   hi! LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+  -- ]]
+  --   vim.api.nvim_create_augroup('lsp_document_highlight', {
+  --     clear = false
+  --   })
+  --   vim.api.nvim_clear_autocmds({
+  --     buffer = bufnr,
+  --     group = 'lsp_document_highlight',
+  --   })
+  --   vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+  --     group = 'lsp_document_highlight',
+  --     buffer = bufnr,
+  --     callback = vim.lsp.buf.document_highlight,
+  --   })
+  --   vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+  --     group = 'lsp_document_highlight',
+  --     buffer = bufnr,
+  --     callback = vim.lsp.buf.clear_references,
+  --   })
+  -- end
 end

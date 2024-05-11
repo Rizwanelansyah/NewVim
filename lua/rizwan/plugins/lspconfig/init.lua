@@ -1,6 +1,13 @@
 local M = {}
 
 M.dep = {
+  'mfussenegger/nvim-dap',
+  'nvim-neotest/nvim-nio',
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    opts = {},
+  },
+  "rcarriga/nvim-dap-ui",
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -14,7 +21,33 @@ M.dep = {
   },
   {
     "folke/neodev.nvim",
+    opts = {
+      library = { plugins = { "nvim-dap-ui" }, types = true },
+    },
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
     opts = {},
+  },
+  'jubnzv/virtual-types.nvim',
+  {
+    "SmiteshP/nvim-navbuddy",
+    dependencies = {
+      { "SmiteshP/nvim-navic", opts = {} },
+      "MunifTanjim/nui.nvim"
+    },
+    config = require("rizwan.plugins.navbuddy"),
+  },
+  "b0o/schemastore.nvim",
+  {
+    "j-hui/fidget.nvim",
+    opts = {},
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^4', -- Recommended
+    lazy = false,   -- This plugin is already lazy
   },
 }
 
@@ -33,7 +66,7 @@ M.config = function()
   vim.diagnostic.config({
     virtual_text = true,
     signs = true,
-    underline = false,
+    underline = true,
     update_in_insert = false,
     severity_sort = false,
   })

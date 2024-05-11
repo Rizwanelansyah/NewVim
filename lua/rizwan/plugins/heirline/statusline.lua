@@ -8,7 +8,7 @@ return {
   {
     provider = "",
     hl = function()
-      return { fg = vim.g.heirline_mode_color, bg = colors.grey }
+      return { fg = vim.g.heirline_mode_color, bg = colors.black }
     end,
     condition = function()
       return condition.is_active() and (vim.bo.modifiable and not vim.bo.readonly)
@@ -18,7 +18,7 @@ return {
   {
     provider = "",
     hl = function()
-      return { fg = colors.grey, bg = vim.g.heirline_mode_color }
+      return { fg = colors.black, bg = vim.g.heirline_mode_color }
     end
   },
   {

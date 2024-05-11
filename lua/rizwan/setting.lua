@@ -8,7 +8,8 @@ M.before = function()
   vim.o.shiftwidth = 2
   vim.o.expandtab = true
   vim.o.wrap = false
-  vim.o.cursorline = true
+  vim.o.cursorline = false
+  vim.o.scrolloff = 8
 
   vim.cmd [[colorscheme habamax]]
 end
@@ -19,6 +20,7 @@ M.after = function()
   vim.cmd [[ hi Float guibg=none ]]
   vim.cmd [[ hi NormalFloat guibg=none ]]
   vim.cmd [[ hi FloatBorder guibg=none guifg=teal ]]
+  vim.cmd [[ hi MatchParen guibg=none guifg=orange ]]
 
   vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = { "*" },

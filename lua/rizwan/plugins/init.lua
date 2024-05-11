@@ -11,6 +11,13 @@ return {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      {
+        "kylechui/nvim-surround",
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        event = "VeryLazy",
+        opts = {},
+      },
     },
     config = from("nvim-tree"),
   },
@@ -63,5 +70,62 @@ return {
     tag = '0.1.6',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = from("telescope"),
-  }
+  },
+
+  {
+    "chrisgrieser/nvim-scissors",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "L3MON4D3/LuaSnip",
+    },
+    config = function()
+      require("scissors").setup {
+        snippetDir = "/home/rizwan/Tools/snippets",
+      }
+      require("luasnip.loaders.from_vscode").lazy_load { paths = { "/home/rizwan/Tools/snippets" } }
+    end
+  },
+
+  {
+    'Wansmer/symbol-usage.nvim',
+    event = 'BufReadPre', -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
+    config = from("symbol-usage"),
+  },
+
+  -- {
+  --   "iamcco/markdown-preview.nvim",
+  --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+  --   ft = { "markdown" },
+  --   build = function() vim.fn["mkdp#util#install"]() end,
+  -- },
+
+  {
+    "yamatsum/nvim-cursorline",
+    dependencies = {
+      "xiyaowong/nvim-cursorword",
+    },
+    opts = {
+      cursorline = {
+        enable = true,
+        timeout = 1000,
+        number = false,
+      },
+      cursorword = {
+        enable = true,
+        min_length = 3,
+        hl = { underline = true },
+      },
+    },
+  },
+
+  {
+    "VidocqH/auto-indent.nvim",
+    opts = {},
+  },
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
+  },
 }
