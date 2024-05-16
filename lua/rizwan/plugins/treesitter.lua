@@ -40,6 +40,9 @@ return function()
     },
     playground = {
       enable = true
+    },
+    indent = {
+      enable = true
     }
   }
 end

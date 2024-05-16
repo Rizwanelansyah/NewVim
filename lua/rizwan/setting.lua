@@ -10,6 +10,9 @@ M.before = function()
   vim.o.wrap = false
   vim.o.cursorline = false
   vim.o.scrolloff = 8
+  vim.g.loaded_netrw = 1
+  vim.g.loaded_netrwPlugin = 1
+  vim.opt.termguicolors = true
 
   vim.cmd [[colorscheme habamax]]
 end

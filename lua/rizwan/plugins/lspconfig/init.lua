@@ -22,7 +22,11 @@ M.dep = {
   {
     "folke/neodev.nvim",
     opts = {
-      library = { plugins = { "nvim-dap-ui" }, types = true },
+      -- override   = function(_, library)
+      --   library.enabled = true
+      --   library.plugins = true
+      -- end,
+      -- pathStrict = true,
     },
   },
   {

@@ -1,5 +1,6 @@
 local cmp = require('cmp')
 local ls = require("luasnip")
+local colors = require("onedark.colors")
 
 vim.keymap.set({ "i", "s" }, "<A-Right>", function() ls.jump(1) end, { silent = true })
 vim.keymap.set({ "i", "s" }, "<A-Left>", function() ls.jump(-1) end, { silent = true })
@@ -16,6 +17,20 @@ cmp.setup {
     expand = function(args)
       require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
     end,
+  },
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.menu = ({
+        nvim_lsp = "[LSP] ",
+        luasnip = "[Snip]",
+        buffer = "[Buff]",
+        path = "[Path]",
+        cmdline = "[CMD] ",
+      })[entry.source.name]
+      return vim_item
+    end,
+    fields = { 'menu', 'abbr', 'kind' },
+    expandable_indicator = true,
   },
   window = {
     completion = cmp.config.window.bordered(),

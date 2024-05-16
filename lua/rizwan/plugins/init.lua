@@ -6,6 +6,7 @@ local lspconfig = from("lspconfig")
 
 return {
   {
+    enbable = false,
     "nvim-tree/nvim-tree.lua",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
@@ -92,31 +93,31 @@ return {
     config = from("symbol-usage"),
   },
 
-  -- {
-  --   "iamcco/markdown-preview.nvim",
-  --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-  --   ft = { "markdown" },
-  --   build = function() vim.fn["mkdp#util#install"]() end,
-  -- },
-
   {
-    "yamatsum/nvim-cursorline",
-    dependencies = {
-      "xiyaowong/nvim-cursorword",
-    },
-    opts = {
-      cursorline = {
-        enable = true,
-        timeout = 1000,
-        number = false,
-      },
-      cursorword = {
-        enable = true,
-        min_length = 3,
-        hl = { underline = true },
-      },
-    },
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
   },
+
+  -- {
+  --   "yamatsum/nvim-cursorline",
+  --   dependencies = {
+  --     "xiyaowong/nvim-cursorword",
+  --   },
+  --   opts = {
+  --     cursorline = {
+  --       enable = true,
+  --       timeout = 1000,
+  --       number = false,
+  --     },
+  --     cursorword = {
+  --       enable = true,
+  --       min_length = 3,
+  --       hl = vim.api.nvim_get_hl(0, { name = "CursorLine" }),
+  --     },
+  --   },
+  -- },
 
   {
     "VidocqH/auto-indent.nvim",

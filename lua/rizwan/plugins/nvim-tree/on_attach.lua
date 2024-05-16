@@ -28,36 +28,36 @@ return function(bufnr)
     end
   end, opts("Rename"))
 
-  vim.keymap.set('n', 'a', function()
-    local node = lib.get_node_at_cursor()
-    if node then
-      ---@param name string
-      local handler = function(name)
-        ---@type Path
-        local path = plen_path:new(node.absolute_path)
-
-        if path:is_dir() then
-          ---@type Path
-          path = path:joinpath(name)
-          if not node.open then
-            lib.expand_or_collapse(node)
-          end
-        else
-          ---@type Path
-          path = path:parent():joinpath(name)
-        end
-
-        local res = path:absolute()
-        if res:sub(-1) == "/" then
-          vim.cmd("silent !mkdir -p " .. res)
-        else
-          vim.cmd("silent !mkdir -p $(dirname " .. res .. ") && touch " .. res)
-        end
-      end
-
-      ui.prompt("File/Directory Name:", "", handler)
-    end
-  end, opts("Create File/Directory"))
+  -- vim.keymap.set('n', 'a', function()
+  --   local node = lib.get_node_at_cursor()
+  --   if node then
+  --     ---@param name string
+  --     local handler = function(name)
+  --       ---@type Path
+  --       local path = plen_path:new(node.absolute_path)
+  --
+  --       if path:is_dir() then
+  --         ---@type Path
+  --         path = path:joinpath(name)
+  --         if not node.open then
+  --           lib.expand_or_collapse(node)
+  --         end
+  --       else
+  --         ---@type Path
+  --         path = path:parent():joinpath(name)
+  --       end
+  --
+  --       local res = path:absolute()
+  --       if res:sub(-1) == "/" then
+  --         vim.cmd("silent !mkdir -p " .. res)
+  --       else
+  --         vim.cmd("silent !mkdir -p $(dirname " .. res .. ") && touch " .. res)
+  --       end
+  --     end
+  --
+  --     ui.prompt("File/Directory Name:", "", handler)
+  --   end
+  -- end, opts("Create File/Directory"))
 
   vim.keymap.set('n', 'd', function()
     local node = lib.get_node_at_cursor()
@@ -73,7 +73,7 @@ return function(bufnr)
     end
   end, opts("Move To Trash"))
 
-  vim.keymap.set('n', '<CR>', function()
+  vim.keymap.set('n', '<Right>', function()
     local node = lib.get_node_at_cursor()
     if node then
       api.node.open.edit()

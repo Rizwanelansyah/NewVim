@@ -9,23 +9,15 @@ return function(lspconfig, base)
     return t2
   end
 
-  local servers = { "emmet_ls", "html", "cssls", "jsonls", "intelephense", "taplo" }
+  local servers = { "emmet_ls", "html", "jsonls", "intelephense", "taplo" }
 
   for _, server in ipairs(servers) do
     lspconfig[server].setup(base)
   end
 
   do
-    local conf = copy(base)
-    conf.settings = {
-      Lua = {
-        completion = {
-          callSnippet = "Replace",
-        },
-      },
-    }
-
-    lspconfig.lua_ls.setup(conf)
+    -- local conf = copy(base)
+    lspconfig.lua_ls.setup(base)
   end
 
   do
@@ -52,6 +44,13 @@ return function(lspconfig, base)
     }
 
     lspconfig.yamlls.setup(conf)
+  end
+
+  do
+    local conf = copy(base)
+    conf.capabilities.textDocument.completion.completionItem.snippetSupport = true
+    conf.filetypes = { "css", "scss", "less", "php" }
+    lspconfig.cssls.setup(conf)
   end
 
   do
