@@ -1,3 +1,7 @@
+vim.filetype.add({
+  pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+})
+
 function LOG(x)
   vim.print(x)
   return x

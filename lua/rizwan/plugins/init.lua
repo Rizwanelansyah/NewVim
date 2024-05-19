@@ -6,23 +6,6 @@ local lspconfig = from("lspconfig")
 
 return {
   {
-    enbable = false,
-    "nvim-tree/nvim-tree.lua",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      {
-        "kylechui/nvim-surround",
-        version = "*", -- Use for stability; omit to use `main` branch for the latest features
-        event = "VeryLazy",
-        opts = {},
-      },
-    },
-    config = from("nvim-tree"),
-  },
-  {
     'navarasu/onedark.nvim',
     config = from("one-dark"),
   },
@@ -38,6 +21,7 @@ return {
       "windwp/nvim-ts-autotag",
       "RRethy/nvim-treesitter-endwise",
       'nvim-treesitter/playground',
+      "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = from("treesitter"),
   },
@@ -128,5 +112,53 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {},
+  },
+
+  {
+    "Rizwanelansyah/simplyfile.nvim",
+    tag = "v0.1",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      local mapping = require("simplyfile.mapping")
+      require("simplyfile").setup {
+        border = {
+          main = "double",
+          left = "single",
+          right = "single",
+        },
+        keymaps = vim.tbl_extend("force", mapping.default, {
+          d = function(dir)
+            if not dir then return end
+            vim.ui.select({ "No", "Yes" }, { prompt = "Move To Trash? " }, function(item)
+              if item == "Yes" then
+                vim.cmd("silent !trash " .. dir.absolute)
+                ---@diagnostic disable-next-line: missing-fields
+                mapping.refresh { absolute = "" }
+              end
+            end)
+          end,
+        }),
+        default_keymaps = true,
+        preview = {
+          show = function(dir)
+            if vim.endswith(dir.name, ".png") then
+              return false
+            else
+              return true
+            end
+          end,
+        }
+      }
+      local map = require("which-key")
+      map.register({
+        f = {
+          n = { "<CMD>SimplyFileOpen<CR>", "Open File Explorer" },
+        }
+      }, {
+        prefix = "<leader>"
+      })
+    end
   },
 }

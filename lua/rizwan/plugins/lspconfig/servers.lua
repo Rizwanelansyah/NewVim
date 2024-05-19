@@ -1,23 +1,30 @@
 local ui = require("libs.ui")
+local function copy(t)
+  local t2 = {}
+  for k, v in pairs(t) do
+    t2[k] = v
+  end
+  return t2
+end
+
 
 return function(lspconfig, base)
-  function copy(t)
-    local t2 = {}
-    for k, v in pairs(t) do
-      t2[k] = v
-    end
-    return t2
-  end
-
-  local servers = { "emmet_ls", "html", "jsonls", "intelephense", "taplo" }
+  local servers = { "emmet_ls", "html", "jsonls", "intelephense", "taplo", "lua_ls", "pyright" }
 
   for _, server in ipairs(servers) do
     lspconfig[server].setup(base)
   end
 
   do
-    -- local conf = copy(base)
-    lspconfig.lua_ls.setup(base)
+    local conf = copy(base)
+    conf.filetypes = { "hyprlang" }
+    lspconfig.hyprls.setup(conf)
+  end
+
+  do
+    local conf = copy(base)
+    conf.single_file_support = true
+    lspconfig.tsserver.setup(conf)
   end
 
   do

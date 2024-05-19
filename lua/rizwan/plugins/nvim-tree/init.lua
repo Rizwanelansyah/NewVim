@@ -1,7 +1,7 @@
 return function()
   -- empty setup using defaults
   require("nvim-tree").setup {
-    -- hijack_netrw = false,
+    hijack_netrw = false,
     renderer = {
       add_trailing = true,
       full_name = true,
