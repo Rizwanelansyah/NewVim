@@ -44,6 +44,7 @@ return function(client, bufnr)
   )
 
   require('virtualtypes').on_attach(client, bufnr)
+  require("nvim-navic").attach(client, bufnr)
   require("nvim-navbuddy").attach(client, bufnr)
 
   -- vim.api.nvim_create_autocmd("CursorHold", {

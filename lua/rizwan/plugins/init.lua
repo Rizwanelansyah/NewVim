@@ -47,6 +47,10 @@ return {
 
   {
     "rebelot/heirline.nvim",
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons", opts = {} },
+      { "SmiteshP/nvim-navic" },
+    },
     config = from("heirline"),
   },
 
@@ -87,25 +91,6 @@ return {
     build = function() vim.fn["mkdp#util#install"]() end,
   },
 
-  -- {
-  --   "yamatsum/nvim-cursorline",
-  --   dependencies = {
-  --     "xiyaowong/nvim-cursorword",
-  --   },
-  --   opts = {
-  --     cursorline = {
-  --       enable = true,
-  --       timeout = 1000,
-  --       number = false,
-  --     },
-  --     cursorword = {
-  --       enable = true,
-  --       min_length = 3,
-  --       hl = vim.api.nvim_get_hl(0, { name = "CursorLine" }),
-  --     },
-  --   },
-  -- },
-
   {
     "VidocqH/auto-indent.nvim",
     opts = {},
@@ -118,12 +103,18 @@ return {
   },
 
   {
-    "Rizwanelansyah/simplyfile.nvim",
-    tag = "v0.3",
-    -- dir = "/home/rizwan/Projects/nvim/simplyfile.nvim",
+    -- "Rizwanelansyah/simplyfile.nvim",
+    -- tag = "v0.3",
+    dir = "/home/rizwan/Projects/nvim/simplyfile.nvim",
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      { "nvim-tree/nvim-web-devicons", opts = {} },
     },
     config = from("simplyfile"),
+  },
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    opts = {},
   },
 }

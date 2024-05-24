@@ -22,6 +22,9 @@ M.dep = {
   {
     "folke/neodev.nvim",
     opts = {
+      library = {
+        plugins = {},
+      },
       -- override   = function(_, library)
       --   library.enabled = true
       --   library.plugins = true

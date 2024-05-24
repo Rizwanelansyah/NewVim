@@ -18,8 +18,6 @@ M.before = function()
 end
 
 M.after = function()
-  vim.cmd [[colorscheme onedark]]
-
   vim.cmd [[ hi Float guibg=none ]]
   vim.cmd [[ hi NormalFloat guibg=none ]]
   vim.cmd [[ hi FloatBorder guibg=none guifg=teal ]]
@@ -28,7 +26,7 @@ M.after = function()
   vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = { "*" },
     callback = function()
-      local clients = vim.lsp.get_active_clients()
+      local clients = vim.lsp.get_clients()
       if clients then
         vim.lsp.buf.format {}
       end
@@ -36,6 +34,24 @@ M.after = function()
   })
 
   require("libs.vim.ui")
+  local map = require("which-key")
+  map.register({
+    b = {
+      name = "Buffer Actions",
+      n = { "<CMD>bnext<CR>", "Next Buffer" },
+      v = { "<CMD>bprevious<CR>", "Prev Buffer" },
+      o = { "<CMD>BufferLineCloseOthers<CR>", "Close Other Buffers" },
+      p = { "<CMD>BufferLinePick<CR>", "Pick Buffer" },
+      c = { "<CMD>BufferLinePickClose<CR>", "Pick Close Buffer" },
+      ["1"] = { "<CMD>bfirst<CR>", "First Buffer" },
+      ["0"] = { "<CMD>blast<CR>", "Last Buffer" },
+    }
+  }, {
+    prefix = "<leader>",
+    noremap = true,
+    silent = true,
+    nowait = true,
+  })
 end
 
 return M
