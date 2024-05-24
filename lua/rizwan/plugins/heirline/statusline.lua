@@ -3,13 +3,15 @@ local color = require("rizwan.plugins.heirline.colors")
 
 return {
   util.surround('', require("rizwan.plugins.heirline.components.vim_mode"), '', "black", "black", "none"),
-  { provider = " ",  hl = { bg = "none" } },
+  { provider = " ", hl = { bg = "none" } },
   util.surround('', require("rizwan.plugins.heirline.components.file"), '', "black", "black", "none"),
+  { provider = " ", hl = { bg = "none" } },
+  require("rizwan.plugins.heirline.components.gitsign"),
   { provider = "%=", hl = { bg = "none" } },
   require("rizwan.plugins.heirline.components.navic"),
   { provider = "%=", hl = { bg = "none" } },
   require("rizwan.plugins.heirline.components.diagnostic"),
-  { provider = " ",  hl = { bg = "none" } },
+  { provider = " ", hl = { bg = "none" } },
   require("rizwan.plugins.heirline.components.lsp"),
   {
     provider = " ",

@@ -49,7 +49,8 @@ return {
     "rebelot/heirline.nvim",
     dependencies = {
       { "nvim-tree/nvim-web-devicons", opts = {} },
-      { "SmiteshP/nvim-navic" },
+      "SmiteshP/nvim-navic",
+      "lewis6991/gitsigns.nvim",
     },
     config = from("heirline"),
   },
@@ -80,7 +81,7 @@ return {
 
   {
     'Wansmer/symbol-usage.nvim',
-    event = 'BufReadPre', -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
+    event = 'BufReadPre',
     config = from("symbol-usage"),
   },
 
@@ -111,6 +112,12 @@ return {
     },
     config = from("simplyfile"),
   },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    config = from("gitsign"),
+  },
+
   {
     'akinsho/bufferline.nvim',
     version = "*",
