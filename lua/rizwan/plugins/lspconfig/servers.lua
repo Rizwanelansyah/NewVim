@@ -9,7 +9,7 @@ end
 
 
 return function(lspconfig, base)
-  local servers = { "emmet_ls", "html", "jsonls", "intelephense", "taplo", "lua_ls", "pyright" }
+  local servers = { "emmet_ls", "html", "jsonls", "taplo", "lua_ls", "pyright", "intelephense" }
 
   for _, server in ipairs(servers) do
     lspconfig[server].setup(base)
@@ -56,7 +56,7 @@ return function(lspconfig, base)
   do
     local conf = copy(base)
     conf.capabilities.textDocument.completion.completionItem.snippetSupport = true
-    conf.filetypes = { "css", "scss", "less", "php" }
+    conf.filetypes = { "css", "scss", "less" }
     lspconfig.cssls.setup(conf)
   end
 

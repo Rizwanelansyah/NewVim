@@ -1,5 +1,4 @@
 return function()
-  require('nvim-ts-autotag').setup()
   require('nvim-treesitter.configs').setup {
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
     ensure_installed = { "c", "lua", "php", "rust" },
@@ -35,9 +34,6 @@ return function()
     endwise = {
       enable = true,
     },
-    autotag = {
-      enable = true,
-    },
     playground = {
       enable = true
     },
@@ -45,4 +41,5 @@ return function()
       enable = true
     }
   }
+  require('nvim-ts-autotag').setup()
 end
