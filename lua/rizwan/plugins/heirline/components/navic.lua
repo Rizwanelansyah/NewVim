@@ -53,7 +53,6 @@ return {
         },
         {
           provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ''),
-
           on_click = {
             minwid = pos,
             callback = function(_, minwid)
@@ -64,14 +63,18 @@ return {
           },
         },
       }
-      if #data > 1 and i < #data then
+      if #data > 1 and i < #data and i < 4 then
         table.insert(child, {
           provider = " -> ",
           hl = { fg = color.green },
         })
       end
       table.insert(children, child)
+      if i > 3 then
+        goto stop
+      end
     end
+    ::stop::
     self.child = self:new(children, 1)
   end,
   provider = function(self)

@@ -43,6 +43,7 @@ M.after = function()
       o = { "<CMD>BufferLineCloseOthers<CR>", "Close Other Buffers" },
       p = { "<CMD>BufferLinePick<CR>", "Pick Buffer" },
       c = { "<CMD>BufferLinePickClose<CR>", "Pick Close Buffer" },
+      d = { "<CMD>bdelete<CR>", "Close Current Buffer" },
       ["1"] = { "<CMD>bfirst<CR>", "First Buffer" },
       ["0"] = { "<CMD>blast<CR>", "Last Buffer" },
     }

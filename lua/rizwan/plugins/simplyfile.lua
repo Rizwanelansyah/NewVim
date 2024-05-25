@@ -3,7 +3,7 @@ return function()
   require("simplyfile").setup {
     border = {
       -- up = { " ", " ", " ", "┐", "┘", "─", "└", "┌" },
-      up = { " ", " ", " ", " ", "┘", "─", "└", " " },
+      up = { "─", "─", "─", " ", "─", "─", "─", " " },
       main = { "┬", "─", "┬", "│", "┴", "─", "┴", "│" },
       left = { "┌", "─", "─", " ", "─", "─", "└", "│" },
       right = { "─", "─", "┐", "│", "┘", "─", "─", " " },
@@ -28,6 +28,27 @@ return function()
           vim.cmd("e " .. dir.absolute)
         end
       end,
+      ["+"] = function(dir)
+        if not dir then return end
+        if dir.is_folder then return end
+        local buf = vim.api.nvim_create_buf(false, true)
+        local win = vim.api.nvim_open_win(buf, true, {
+          relative = "editor",
+          col = 2,
+          row = 2,
+          width = vim.o.columns - 4,
+          height = vim.o.lines - 6,
+          border = "rounded",
+        })
+        vim.cmd("e " .. dir.absolute)
+        vim.api.nvim_set_option_value("readonly", true, { buf = buf })
+        vim.api.nvim_set_option_value("modifiable", false, { buf = buf })
+        vim.api.nvim_buf_set_keymap(0, "n", "<ESC>", "", {
+          callback = function()
+            vim.api.nvim_buf_delete(0, { force = true })
+          end
+        })
+      end
     }),
     default_keymaps = true,
     preview = {
@@ -41,12 +62,14 @@ return function()
     },
     clipboard = {
       notify = true,
-    }
+    },
   }
   local map = require("which-key")
   map.register({
     f = {
+      name = "Find & Files",
       n = { "<CMD>SimplyFileOpen<CR>", "Open File Explorer" },
+      e = { function() require("simplyfile").open(vim.fn.getcwd(0)) end, "Open File Explorer On CWD" }
     }
   }, {
     prefix = "<leader>"

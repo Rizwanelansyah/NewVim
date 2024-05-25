@@ -104,9 +104,9 @@ return {
   },
 
   {
-    -- "Rizwanelansyah/simplyfile.nvim",
-    -- tag = "v0.3",
-    dir = "/home/rizwan/Projects/nvim/simplyfile.nvim",
+    "Rizwanelansyah/simplyfile.nvim",
+    tag = "v0.4",
+    -- dir = "/home/rizwan/Projects/nvim/simplyfile.nvim",
     dependencies = {
       { "nvim-tree/nvim-web-devicons", opts = {} },
     },

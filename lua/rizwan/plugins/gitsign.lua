@@ -27,18 +27,18 @@ local function on_attach(bufnr)
   -- map('o', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   -- map('x', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 
-  require("which-key").register({
-    h = { name = "GitSigns" },
-    t = { name = "Toggle" },
-  }, {
-    prefix = "<leader>"
-  })
-  require("which-key").register({
-    h = { name = "GitSigns" },
-  }, {
-    mode = "v",
-    prefix = "<leader>"
-  })
+  -- require("which-key").register({
+  --   h = { name = "GitSigns" },
+  --   t = { name = "Toggle" },
+  -- }, {
+  --   prefix = "<leader>"
+  -- })
+  -- require("which-key").register({
+  --   h = { name = "GitSigns" },
+  -- }, {
+  --   mode = "v",
+  --   prefix = "<leader>"
+  -- })
 end
 
 return function()

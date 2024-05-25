@@ -23,6 +23,10 @@ return {
     hl = { bold = true, fg = color.orange, bg = color.black }
   },
   {
+    provider = " ",
+    hl = { bg = color.orange }
+  },
+  {
     provider = function(self)
       local count = self.status_dict.added or 0
       return count > 0 and ("+" .. count)
@@ -42,6 +46,13 @@ return {
       return count > 0 and ("~" .. count)
     end,
     hl = { fg = color.black, bg = color.orange },
+  },
+  {
+    conditions = function(self)
+      return self.has_changes
+    end,
+    provider = "",
+    hl = { fg = color.orange, bg = color.black }
   },
   {
     provider = "",
